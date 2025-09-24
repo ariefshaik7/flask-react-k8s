@@ -33,3 +33,4 @@ class Note(db.Model):
             "content": self.content,
             "updated_at": self.updated_at.isoformat(),
         }
+
