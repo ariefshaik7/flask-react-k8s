@@ -5,13 +5,13 @@ from routes import auth, notes
 
 def create_app():
     app = Flask(__name__)
+    metrics.init_app(app)
     app.config.from_object(Config)
 
     # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
     cors.init_app(app)
-    metrics.init_app(app)
 
     # Register blueprints
     app.register_blueprint(auth.bp, url_prefix="/api")
