@@ -70,6 +70,9 @@ jobs:
         run: |
           sed -i '/simplenotes-frontend/!b;n;s/tag: .*/tag: "${{ github.run_id }}"/' helm/simplenotes-app-chart/values.yaml
 
+      - name: Pull latest changes
+        run: git pull --rebase origin master
+
       - name: Commit and push changes
         run: |
           git config --local user.email "ariefshaik001@gmail.com"
