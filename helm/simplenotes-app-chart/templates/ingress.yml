@@ -3,9 +3,7 @@ kind: Ingress
 metadata:
   name: simplenotes-ingress
   annotations:
-    # Tells NGINX to use regex for path matching
     nginx.ingress.kubernetes.io/use-regex: "true"
-    # Strips /api and forwards the rest of the URL to the backend
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
@@ -13,8 +11,6 @@ spec:
   - host: {{ .Values.ingress.host | default "simplenotes.com" }}
     http:
       paths:
-      # Rule for the backend API
-      # Matches /api, /api/, and /api/anything...
       - path: /api(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
@@ -22,8 +18,6 @@ spec:
             name: simplenotes-backend
             port:
               number: 5001
-      # Rule for the frontend application
-      # This is the default rule that catches everything else
       - path: /
         pathType: Prefix
         backend:
