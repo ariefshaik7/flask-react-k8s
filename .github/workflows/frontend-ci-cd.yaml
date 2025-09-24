@@ -75,7 +75,7 @@ jobs:
           git config --local user.email "ariefshaik001@gmail.com"
           git config --local user.name "ariefshaik7"
           git add helm/simplenotes-app-chart/values.yaml
-          git commit -m "ci: pre-pull commit for updated image tag" || echo "No changes to commit"
+          git commit -m "ci: update backend image tag to ${{ github.run_id }}" || echo "No changes to commit"
 
       - name: Pull latest changes
         run: git pull --rebase origin master
