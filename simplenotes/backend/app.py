@@ -14,8 +14,8 @@ def create_app():
     cors.init_app(app)
 
     # Register blueprints
-    app.register_blueprint(auth.bp, url_prefix="/api")
-    app.register_blueprint(notes.bp, url_prefix="/api")
+    app.register_blueprint(auth.bp)
+    app.register_blueprint(notes.bp)
 
     with app.app_context():
         db.create_all()
