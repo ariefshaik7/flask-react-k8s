@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/ariefshaik7/simplenotes.git'
+    repoURL: 'https://github.com/ariefshaik7/flask-react-k8s.git'
     path: helm/simplenotes-app-chart
     targetRevision: HEAD
     helm:
