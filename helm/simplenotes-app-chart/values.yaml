@@ -1,7 +1,7 @@
 frontend:
   image:
     repository: ariefshaik007/simplenotes-frontend
-    tag: "17985855348"
+    tag: "17986303929"
   replicaCount: 1
   service:
     type: ClusterIP 
