@@ -3,32 +3,24 @@ kind: Ingress
 metadata:
   name: simplenotes-ingress
   annotations:
-    # This annotation is now correctly paired with the backend path
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
   - host: {{ .Values.ingress.host | default "simplenotes.com" }}
     http:
       paths:
-      # RULE 1: Send API traffic to the backend service.
-      # The rewrite annotation will strip "/api" before sending it.
       - path: /api(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
-            # Make sure this is the correct name of your backend service
             name: simplenotes-backend
             port:
               number: 5001
-
-      # RULE 2: Send all other traffic to the frontend service.
-      # This is the root path that serves your React app.
       - path: /
         pathType: Prefix
         backend:
           service:
-            # Make sure this is the correct name of your frontend service
             name: frontend-service
             port:
               number: 80
