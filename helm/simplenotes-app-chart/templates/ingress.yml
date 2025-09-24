@@ -8,7 +8,7 @@ spec:
   - host: {{ .Values.ingress.host | default "simplenotes.com" }}
     http:
       paths:
-      - path: /
+      - path: /api
         pathType: Prefix
         backend:
           service:
