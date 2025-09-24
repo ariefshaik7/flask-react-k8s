@@ -1,4 +1,3 @@
-
 name: Frontend CI/CD
 
 on:
@@ -66,18 +65,21 @@ jobs:
         with:
           token: ${{ secrets.GIT_PAT }}
 
+
       - name: Update new tag in Helm chart
         run: |
           sed -i '/simplenotes-frontend/!b;n;s/tag: .*/tag: "${{ github.run_id }}"/' helm/simplenotes-app-chart/values.yaml
 
-      - name: Pull latest changes
-        run: git pull --rebase origin master
-
-      - name: Commit and push changes
+      - name: Stage and commit changes before pulling
         run: |
           git config --local user.email "ariefshaik001@gmail.com"
           git config --local user.name "ariefshaik7"
           git add helm/simplenotes-app-chart/values.yaml
-          git commit -m "ci: update frontend image tag to ${{ github.run_id }}"
-          git push
+          git commit -m "ci: pre-pull commit for updated image tag" || echo "No changes to commit"
+
+      - name: Pull latest changes
+        run: git pull --rebase origin master
+
+      - name: Push changes
+        run: git push
 
