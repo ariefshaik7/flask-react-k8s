@@ -1,1 +1,1 @@
-from routes import auth, notes
+from .routes import auth, notes
