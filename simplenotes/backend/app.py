@@ -6,7 +6,8 @@ from .extensions import db, jwt
 from .routes.auth import bp as auth_bp
 from .routes.notes import bp as notes_bp
 # Import generate_latest
-from prometheus_flask_exporter import PrometheusMetrics, generate_latest
+from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import generate_latest
 
 def create_app():
     app = Flask(__name__)

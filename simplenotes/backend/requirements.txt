@@ -3,7 +3,8 @@ Flask-SQLAlchemy
 Flask-Bcrypt
 Flask-Cors
 PyJWT
+Flask-JWT-Extended
 prometheus-flask-exporter
+prometheus-client  
 psycopg2-binary
 gunicorn
-Flask-JWT-Extended
