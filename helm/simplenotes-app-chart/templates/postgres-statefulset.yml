@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres-statefulset 
+  name: postgres-statefulset
 spec:
   serviceName: "postgres-service"
   replicas: 1
   selector:
     matchLabels:
-      app: postgres 
+      app: postgres
   template:
     metadata:
       labels:
-        app: postgres 
+        app: postgres
     spec:
       containers:
       - name: postgres
@@ -31,6 +31,7 @@ spec:
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+          subPath: postgres 
   volumeClaimTemplates:
   - metadata:
       name: postgres-storage
