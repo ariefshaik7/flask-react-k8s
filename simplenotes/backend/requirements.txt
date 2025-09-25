@@ -6,3 +6,4 @@ PyJWT
 prometheus-flask-exporter
 psycopg2-binary
 gunicorn
+Flask-JWT-Extended
