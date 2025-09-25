@@ -3,8 +3,8 @@ from flask import Flask, Response
 from flask_cors import CORS
 from .config import Config
 from .extensions import db, jwt
-from .routes.auth import auth_bp
-from .routes.notes import notes_bp
+from .routes.auth import bp as auth_bp
+from .routes.notes import bp as notes_bp
 # Import generate_latest
 from prometheus_flask_exporter import PrometheusMetrics, generate_latest
 
