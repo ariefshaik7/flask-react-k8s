@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build & Test Frontend
+    name: Setup Node.js and Install dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -29,6 +29,17 @@ jobs:
       - name: Run tests
         working-directory: ./simplenotes/frontend
         run: npm test
+  
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+      - uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   docker:
     name: Build & Push Docker Image
