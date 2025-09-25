@@ -9,4 +9,4 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 cors = CORS()
 metrics = PrometheusMetrics.for_app_factory()
-jwt = JWTManager() # <-- ADD THIS LINE
+jwt = JWTManager()

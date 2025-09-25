@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from extensions import db
-from models import Note
-from utils.auth import token_required
+from ..extensions import db
+from ..models import Note
+from ..utils.auth import token_required
 
 bp = Blueprint("notes", __name__)
 
