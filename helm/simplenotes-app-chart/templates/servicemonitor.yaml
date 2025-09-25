@@ -2,16 +2,17 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: simplenotes-backend-monitor
-  namespace: monitoring 
+  namespace: app
   labels:
-    release: prometheus 
+    release: my-kube-prometheus 
 spec:
-  selector:
-    matchLabels:
-      app: backend 
   namespaceSelector:
     matchNames:
-      - app
+    - app
+  selector:
+    matchLabels:
+      app: backend
   endpoints:
   - port: http
+    path: /metrics
     interval: 15s
