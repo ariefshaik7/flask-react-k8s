@@ -1,11 +1,9 @@
-# AFTER: Explicitly creating the /metrics endpoint
 from flask import Flask, Response
 from flask_cors import CORS
 from .config import Config
 from .extensions import db, jwt
 from .routes.auth import bp as auth_bp
 from .routes.notes import bp as notes_bp
-# Import generate_latest
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import generate_latest
 
@@ -17,14 +15,11 @@ def create_app():
     jwt.init_app(app)
     CORS(app)
 
-    # Initialize Prometheus Metrics, but we will create the endpoint manually
     metrics = PrometheusMetrics(app)
 
-    # Register Blueprints
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(notes_bp, url_prefix='/api')
 
-    # ADD THIS NEW ROUTE for the /metrics endpoint
     @app.route('/metrics')
     def metrics_endpoint():
         return Response(generate_latest(), mimetype='text/plain')
