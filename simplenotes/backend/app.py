@@ -1,27 +1,31 @@
-from flask import Flask
-from config import Config
-from extensions import db, bcrypt, cors, metrics
-from routes import auth, notes
+# AFTER: Explicitly creating the /metrics endpoint
+from flask import Flask, Response
+from flask_cors import CORS
+from .config import Config
+from .extensions import db, jwt
+from .routes.auth import auth_bp
+from .routes.notes import notes_bp
+# Import generate_latest
+from prometheus_flask_exporter import PrometheusMetrics, generate_latest
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize extensions
     db.init_app(app)
-    bcrypt.init_app(app)
-    cors.init_app(app)
-    metrics.init_app(app)
+    jwt.init_app(app)
+    CORS(app)
 
-    # Register blueprints
-    app.register_blueprint(auth.bp, url_prefix="/api")
-    app.register_blueprint(notes.bp, url_prefix="/api")
+    # Initialize Prometheus Metrics, but we will create the endpoint manually
+    metrics = PrometheusMetrics(app)
 
-    with app.app_context():
-        db.create_all()
+    # Register Blueprints
+    app.register_blueprint(auth_bp, url_prefix='/api')
+    app.register_blueprint(notes_bp, url_prefix='/api')
+
+    # ADD THIS NEW ROUTE for the /metrics endpoint
+    @app.route('/metrics')
+    def metrics_endpoint():
+        return Response(generate_latest(), mimetype='text/plain')
 
     return app
-
-if __name__ == "__main__":
-    app = create_app()
-    app.run(host="0.0.0.0", port=5001, debug=True)
