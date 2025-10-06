@@ -15,9 +15,10 @@ This repository contains a full-stack **Flask + React**  three-tier web applicat
   * `/api` → backend service
   * `/` → frontend service
 
+---
+![simplenotes](/assets/images/flask-app.png)
 
-*Note: Architecture diagram is illustrative of the workflow.*
-
+---
 
 ## 🚀 Technology Stack
 
