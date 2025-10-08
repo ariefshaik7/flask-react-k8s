@@ -118,8 +118,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 ```
 kubectl create namespace argocd
-│   └── postgres-statefulset.yml # PostgreSQL StatefulSet for persistent DB storage
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
 ```
 
 **c. Access ArgoCD:**
@@ -133,13 +133,20 @@ Change the argocd-server service type to LoadBalancer:
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 After a short wait, your cloud provider will assign an external IP address to the service. You can retrieve this IP with:
-### ArgoCD Application Overview
-Below is a screenshot of the ArgoCD UI showing the health and sync status of all application components:
-
-![ArgoCD Application Tree](./assets/images/argocd.png)
 ```
 kubectl get svc argocd-server -n argocd -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
 ```
+---
+### ArgoCD Application Overview
+Below is a screenshot of the ArgoCD UI showing the health and sync status of all application components:
+
+---
+
+![ArgoCD Application Tree](./assets/images/argocd.png)
+
+---
+
+
 #### Port Forwarding
 
 Kubectl port-forwarding can also be used to connect to the API server without exposing the service.
@@ -230,6 +237,7 @@ Add the following line:
 * **Prometheus:** http://prometheus.local
 * **Grafana:** http://grafana.local
 
+---
 
 ## 📊 Monitoring with Prometheus & Grafana
 
@@ -247,6 +255,7 @@ This section details how to set up a robust monitoring stack for the Flask backe
     
 5. **Ingress**: Exposes the Prometheus and Grafana web UIs on user-friendly hostnames.
     
+---
 
 ### Step-by-Step Monitoring Setup
 
@@ -272,12 +281,15 @@ This command installs the stack into a dedicated monitoring namespace.
 ```
 helm install my-kube-prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 ```
+---
 
 #### Step 2: Enable Prometheus to Monitor Your App
-
+Monitoring
 The `ServiceMonitor` for the backend is already included in the Helm chart at `helm/simplenotes-app-chart/templates/servicemonitor.yaml`.
 
 The crucial part is the label `release: my-kube-prometheus`. This label on the `ServiceMonitor` tells the specific Prometheus instance installed by the Helm chart to pay attention to it. Prometheus will then look for any Service in the `app` namespace that has the label `app: backend` and begin scraping its `/metrics` endpoint.
+
+---
 
 #### Step 3: Access Prometheus and Grafana via Ingress
 
@@ -301,7 +313,7 @@ Add the following line, replacing &lt;YOUR\_INGRESS\_IP&gt; with the IP from the
 ```
 <YOUR_INGRESS_IP>   simplenotes.com prometheus.local grafana.local
 ```
-
+---
 
 #### Step 4: Access Grafana and Visualize
 
