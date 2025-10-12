@@ -7,6 +7,10 @@ from .routes.notes import bp as notes_bp
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import generate_latest
 
+@app.route('/health')
+def health_check():
+    return "OK", 200
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)

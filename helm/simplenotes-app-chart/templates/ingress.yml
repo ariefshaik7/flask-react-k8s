@@ -2,8 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: simplenotes-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "selfsigned-issuer"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host | default "simplenotes.com" }}
+    secretName: simplenotes-tls
   rules:
   - host: {{ .Values.ingress.host | default "simplenotes.com" }}
     http:

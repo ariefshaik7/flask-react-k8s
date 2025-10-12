@@ -80,6 +80,29 @@ The entire pipeline is automated via GitHub Actions and operates on a GitOps pri
 ---
 
 
+##  SonarQube Installation
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jdk unzip wget -y
+sudo adduser sonarqube
+cd /opt
+sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.4.87374.zip
+sudo unzip sonarqube-9.9.4.87374.zip
+sudo mv sonarqube-9.9.4.87374 sonarqube
+sudo chown -R sonarqube:sonarqube /opt/sonarqube
+sudo chmod -R 775 /opt/sonarqube
+sudo su -s /bin/bash sonarqube
+cd /opt/sonarqube/bin/linux-x86-64/
+./sonar.sh start
+./sonar.sh status
+```
+
+Access at: `http://<your_server_ip>:9000` (`admin` / `admin`).Create a project and generate a token.
+
+---
+
+
 ## 🚀 End-to-End Deployment Guide
 
 
