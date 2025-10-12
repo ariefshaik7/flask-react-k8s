@@ -28,5 +28,8 @@ def create_app():
     @app.route("/health")
     def health_check():
         return "OK", 200
+    
+    with app.app_context():
+        db.create_all()
 
     return app
