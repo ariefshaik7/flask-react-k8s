@@ -29,4 +29,3 @@ def create_app():
         return Response(generate_latest(), mimetype='text/plain')
 
     return app
-
