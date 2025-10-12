@@ -7,9 +7,6 @@ from .routes.notes import bp as notes_bp
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import generate_latest
 
-@app.route('/health')
-def health_check():
-    return "OK", 200
 
 def create_app():
     app = Flask(__name__)
@@ -21,11 +18,15 @@ def create_app():
 
     metrics = PrometheusMetrics(app)
 
-    app.register_blueprint(auth_bp, url_prefix='/api')
-    app.register_blueprint(notes_bp, url_prefix='/api')
+    app.register_blueprint(auth_bp, url_prefix="/api")
+    app.register_blueprint(notes_bp, url_prefix="/api")
 
-    @app.route('/metrics')
+    @app.route("/metrics")
     def metrics_endpoint():
-        return Response(generate_latest(), mimetype='text/plain')
+        return Response(generate_latest(), mimetype="text/plain")
+
+    @app.route("/health")
+    def health_check():
+        return "OK", 200
 
     return app
