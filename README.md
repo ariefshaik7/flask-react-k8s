@@ -79,6 +79,70 @@ The entire pipeline is automated via GitHub Actions and operates on a GitOps pri
 
 ---
 
+### 1\. Automated SSL/TLS with cert-manager
+
+To ensure secure communication, the application uses `cert-manager` to automatically provision and manage TLS certificates. This enables HTTPS, encrypting all traffic between users and the application.
+
+  * **Self-Signed Issuer**: For development and personal projects without a registered domain name, a `SelfSigned ClusterIssuer` is used. `cert-manager` automatically generates a self-signed certificate and injects it into the Ingress resource, removing the need for manual certificate management.
+
+  * **Ingress Configuration**: The Ingress resource is annotated to request a certificate from our self-signed issuer, which is then stored in a Kubernetes secret and used by the NGINX Ingress controller.
+
+    **`helm/simplenotes-app-chart/templates/ingress.yml`**
+
+    ```yaml
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: simplenotes-ingress
+      annotations:
+        # Use the selfsigned-issuer to get a certificate
+        cert-manager.io/cluster-issuer: "selfsigned-issuer"
+    spec:
+      ingressClassName: nginx
+      tls:
+      - hosts:
+        - {{ .Values.ingress.host | default "simplenotes.com" }}
+        # cert-manager will store the certificate in this secret
+        secretName: simplenotes-tls-selfsigned
+    # ...
+    ```
+
+### 2\. Health Probes for Self-Healing
+
+To build a resilient and self-healing system, the frontend and backend deployments are configured with Kubernetes health probes.
+
+  * **Liveness Probes**: These probes check if the application is still running. If a probe fails, Kubernetes automatically restarts the container, recovering it from a frozen or deadlocked state.
+
+  * **Readiness Probes**: These probes check if the application is ready to accept traffic. If a probe fails, Kubernetes stops sending new requests to the pod until it becomes ready again. This is crucial for preventing errors during startup or when the application is temporarily overloaded.
+
+A dedicated `/health` endpoint was added to the Flask backend to provide an accurate health status.
+
+**`helm/simplenotes-app-chart/templates/backend-deployment.yml`**
+
+```yaml
+# ...
+      containers:
+      - name: backend
+        # ...
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 15
+          periodSeconds: 20
+# ...
+```
+
+
+
+---
+
 
 ##  SonarQube Installation
 
