@@ -229,7 +229,7 @@ Below is a screenshot of the ArgoCD UI showing the health and sync status of all
 
 ---
 
-![ArgoCD Application Tree](./assets/images/argocd.png)
+![ArgoCD Application Tree](./assets/images/ArgoCD.png)
 
 ---
 
