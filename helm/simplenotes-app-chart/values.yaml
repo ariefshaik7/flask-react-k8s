@@ -10,7 +10,7 @@ frontend:
 backend:
   image:
     repository: ariefshaik007/simplenotes-backend
-    tag: "18443265184"
+    tag: "18443311941"
   replicaCount: 1
   service:
     port: 5001
